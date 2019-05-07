@@ -1,0 +1,38 @@
+<html>
+
+    <head>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <!-- O bloco com chaves e percent indica um bloco lógico, que pode conter comandos, por exemplo. -->
+    <!-- Chaves duplas indica o que será renderizado no html -->
+
+    <body>
+        <div class="pane">
+            <div class = 'header'>
+            <h1>Restaurants</h1>
+        </div>
+
+        <div class='flash'>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li><strong>{{ message }}</strong></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <table>
+            {% for r in restaurants %}
+            <tr>
+                <td>{{ r.name }}</td>
+                <td><a href="{{ url_for('showMenu', restaurant_id = r.id) }}">Menu</a></td>
+                <td><a href="{{ url_for('editRestaurant', restaurant_id = r.id) }}">Edit</a></td>
+                <td><a href="{{ url_for('deleteRestaurant', restaurant_id = r.id) }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
