@@ -6,6 +6,17 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Restaurant, Base, MenuItem
 
+# Imports for Token Anti fraud
+from flask import session as login_session
+import random, string
+
+# Imports for OAuth
+from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
+import httplib2
+import json
+from flask import make_response
+import requests
+
 # Create session and connect to DB
 engine = create_engine('sqlite:///restaurantmenu.db')
 Base.metadata.bind = engine
@@ -20,6 +31,10 @@ session = DBSession()
 #Fake Menu Items
 # items = [ {'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','course' :'Entree', 'id':'1'}, {'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99', 'course':'Dessert','id':'2'},{'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99', 'course':'Entree','id':'3'},{'name':'Iced Tea', 'description':'with lemon','price':'$.99', 'course':'Beverage','id':'4'},{'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99', 'course':'Appetizer','id':'5'} ]
 # item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree', 'id':'1'}
+
+
+CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_id']
+
 
 def save_and_commit(obj):
     session.add(obj)
